@@ -1,24 +1,29 @@
-name: Java CI with Maven
+name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "main", "dev" ] # Chạy khi push vào main hoặc dev
+    branches: [ "main", "dev" ]
   pull_request:
-    branches: [ "main" ]        # Chạy khi tạo PR vào main
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4 # Bước lấy code từ repo về máy ảo
+      - uses: actions/checkout@v4
 
-      - name: Set up JDK 17      # Cài đặt Java (hợp với Spring Boot hiện tại)
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: maven
+          # Thay maven bằng gradle để máy ảo tự cache các thư viện Gradle cho nhanh
+          cache: gradle
 
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml # Lệnh này sẽ tự chạy cả Unit Test
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        # Lệnh này tương đương với mvn package, nó sẽ build và chạy test
+        run: ./gradlew build
