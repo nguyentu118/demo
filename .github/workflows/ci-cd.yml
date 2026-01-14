@@ -1,0 +1,24 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main", "dev" ] # Chạy khi push vào main hoặc dev
+  pull_request:
+    branches: [ "main" ]        # Chạy khi tạo PR vào main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4 # Bước lấy code từ repo về máy ảo
+
+      - name: Set up JDK 17      # Cài đặt Java (hợp với Spring Boot hiện tại)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml # Lệnh này sẽ tự chạy cả Unit Test
