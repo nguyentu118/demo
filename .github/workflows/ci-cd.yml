@@ -30,6 +30,7 @@ jobs:
           name: app-jar
           path: build/libs/*.jar
 
+
   push-to-docker-hub:
     needs: build-and-test
     if: github.ref == 'refs/heads/main' # Chỉ đẩy lên Docker Hub khi push vào main
